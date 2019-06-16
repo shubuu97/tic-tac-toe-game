@@ -1,12 +1,11 @@
 import React from 'react';
-import Board from './board/Board';
-
+import Game from './game/Game';
 class App extends React.Component {
     render() {
         return (
             <div className="game">
                 <div className="game-board">
-                    <Board />
+                    <Game />
                 </div>
             </div>
         )
