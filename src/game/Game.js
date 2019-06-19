@@ -1,7 +1,7 @@
 import React from 'react';
 import Board from '../board/Board';
 import calculateWinner from '../calculateWinner';
-
+import _get from 'lodash/get';
 class Game extends React.Component {
     constructor(props) {
         super(props);
@@ -42,10 +42,18 @@ class Game extends React.Component {
         })
     }
 
+    handleReset = () => {
+        this.setState({ history: [
+            {
+                squares: Array(9).fill(null)
+            }
+        ]})
+    }
+
     render() {
-        const history= this.state.history
-        const currentState = history[this.state.stepNumber];
-        const winner = calculateWinner(currentState.squares);
+        const history= _get(this.state,'history', [])
+        const currentState = history[this.state.stepNumber] || {};
+        const winner = calculateWinner(_get(currentState,'squares', []));
 
         const moves = history.map((step, move) => {
             console.log(move, 'move')
@@ -68,9 +76,10 @@ class Game extends React.Component {
         return (
             <div>
                 <Board 
-                    squares={currentState.squares}
+                    squares={_get(currentState,'squares', [])}
                     onClick={i => this.handleClick(i)}
                 />
+                <button onClick={this.handleReset}>Reset</button>
                 <div>{status}</div>
                 <div>{moves}</div>
             </div>
